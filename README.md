@@ -1,4 +1,4 @@
-GitHub Update
+GitHub Update [![Build status](https://ci.appveyor.com/api/projects/status/4we4y6eh1wd7jyrp)](https://ci.appveyor.com/project/nixxquality/githubupdate)
 =============
 
 Easy way to check if your C# program is up to date using GitHub Releases
