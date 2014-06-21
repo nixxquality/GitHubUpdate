@@ -6,7 +6,7 @@ Easy way to check if your C# program is up to date using GitHub Releases
 Installing
 ----------
 ```
-> Install-Package GitHubUpdate
+PM> Install-Package GitHubUpdate
 ```
 
 Example
@@ -14,7 +14,7 @@ Example
 ```csharp
 var checker = new UpdateChecker("nixxquality", "WebMConverter", "2.3.0")
 
-UpdateType update = checker.CheckUpdate().Result; // this is a Task, so you could also ContinueWith if you wanted to
+UpdateType update = checker.CheckUpdate().Result; // this is a Task, so you could also ContinueWith
 
 if (update == UpdateType.None)
 {
