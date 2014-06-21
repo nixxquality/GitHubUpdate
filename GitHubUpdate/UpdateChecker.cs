@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Forms;
 
 using Octokit;
 using Semver;
@@ -17,25 +18,43 @@ namespace GitHubUpdate
 
     public class UpdateChecker
     {
-        readonly IReleasesClient releaseClient;
-        internal readonly GitHubClient github;
+        IReleasesClient releaseClient;
+        internal GitHubClient github;
 
         internal SemVersion currentVersion;
         internal string repositoryOwner;
         internal string repostoryName;
         internal Release latestRelease;
 
-        public UpdateChecker(string owner, string name, string version)
+        void init(string owner, string name, SemVersion version)
         {
-            Helper.ArgumentNotNullOrEmptyString(owner, "owner");
-            Helper.ArgumentNotNullOrEmptyString(name, "name");
-
             github = new GitHubClient(new ProductHeaderValue(name + "-UpdateCheck"));
             releaseClient = github.Release;
 
             repositoryOwner = owner;
             repostoryName = name;
-            this.currentVersion = Helper.StripInitialV(version);
+            currentVersion = version;
+        }
+
+        public UpdateChecker(string owner, string name)
+        {
+            Helper.ArgumentNotNullOrEmptyString(owner, "owner");
+            Helper.ArgumentNotNullOrEmptyString(name, "name");
+
+            string version = System.Windows.Forms.Application.ProductVersion;
+
+            version = version.Substring(0, version.LastIndexOf('.'));
+
+            init(owner, name, version);
+        }
+
+        public UpdateChecker(string owner, string name, string version)
+        {
+            Helper.ArgumentNotNullOrEmptyString(owner, "owner");
+            Helper.ArgumentNotNullOrEmptyString(name, "name");
+            Helper.ArgumentNotNullOrEmptyString(version, "version");
+
+            init(owner, name, Helper.StripInitialV(version));
         }
 
         public async Task<UpdateType> CheckUpdate()

@@ -19,11 +19,19 @@ namespace Sample
 
         void check(object sender, EventArgs e)
         {
-            var check = new UpdateChecker(User.Text, Repo.Text, Version.Text);
+            UpdateChecker checker;
+            if (ProductVersion.Checked)
+            {
+                checker = new UpdateChecker(User.Text, Repo.Text);
+            }
+            else
+            {
+                checker = new UpdateChecker(User.Text, Repo.Text, Version.Text);
+            }
 
             var button = sender as Button;
             button.Enabled = false;
-            check.CheckUpdate().ContinueWith((continuation) =>
+            checker.CheckUpdate().ContinueWith((continuation) =>
             {
                 // if (continuation.Result == UpdateType.None)
                 //    return;
@@ -33,10 +41,10 @@ namespace Sample
                     button.Enabled = true;
                     if (continuation.Result != UpdateType.None)
                     {
-                        var result = new UpdateNotifyDialog(check).ShowDialog();
+                        var result = new UpdateNotifyDialog(checker).ShowDialog();
                         if (result == DialogResult.Yes)
                         {
-                            (check).DownloadAsset(Asset.Text);
+                            checker.DownloadAsset(Asset.Text);
                         }
                     }
                     else
@@ -45,6 +53,11 @@ namespace Sample
                     }
                 }));
             });
+        }
+
+        void ProductVersion_CheckedChanged(object sender, EventArgs e)
+        {
+            Version.Enabled = !ProductVersion.Checked;
         }
     }
 }
