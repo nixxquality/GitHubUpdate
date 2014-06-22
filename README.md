@@ -12,9 +12,9 @@ PM> Install-Package GitHubUpdate
 Example
 -------
 ```csharp
-var checker = new UpdateChecker("nixxquality", "WebMConverter", "2.3.0")
+var checker = new UpdateChecker("nixxquality", "WebMConverter") // uses your Application.ProductVersion
 
-UpdateType update = checker.CheckUpdate().Result; // this is a Task, so you could also ContinueWith
+UpdateType update = await checker.CheckUpdate();
 
 if (update == UpdateType.None)
 {
