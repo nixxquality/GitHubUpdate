@@ -60,7 +60,7 @@ namespace GitHubUpdate
         public async Task<UpdateType> CheckUpdate()
         {
             var releases = await releaseClient.GetAll(repositoryOwner, repostoryName);
-            latestRelease = releases.FirstOrDefault(release => Helper.StripInitialV(release.TagName) > currentVersion);
+            latestRelease = releases.FirstOrDefault(release => !release.Prerelease && Helper.StripInitialV(release.TagName) > currentVersion);
 
             UpdateType type = UpdateType.None;
             string tagName = null, body = null;
