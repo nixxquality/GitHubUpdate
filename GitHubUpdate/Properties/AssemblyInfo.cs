@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("nixx quality")]
 [assembly: AssemblyProduct("GitHubUpdate")]
-[assembly: AssemblyCopyright("Copyright © nixx quality 2014")]
+[assembly: AssemblyCopyright("Copyright © nixx quality 2014, 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
