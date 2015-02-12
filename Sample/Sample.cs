@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 using GitHubUpdate;
@@ -17,7 +12,7 @@ namespace Sample
             InitializeComponent();
         }
 
-        void check(object sender, EventArgs e)
+        void Check(object sender, EventArgs e)
         {
             UpdateChecker checker;
             if (ProductVersion.Checked)
@@ -29,16 +24,15 @@ namespace Sample
                 checker = new UpdateChecker(User.Text, Repo.Text, Version.Text);
             }
 
-            var button = sender as Button;
-            button.Enabled = false;
-            checker.CheckUpdate().ContinueWith((continuation) =>
+            ((Button)sender).Enabled = false;
+            checker.CheckUpdate().ContinueWith(continuation =>
             {
                 // if (continuation.Result == UpdateType.None)
                 //    return;
 
                 Invoke(new Action(() => // Go back to the UI thread
                 {
-                    button.Enabled = true;
+                    ((Button)sender).Enabled = true;
                     if (continuation.Result != UpdateType.None)
                     {
                         var result = new UpdateNotifyDialog(checker).ShowDialog();

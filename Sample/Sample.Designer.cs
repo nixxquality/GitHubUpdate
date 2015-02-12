@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Check = new System.Windows.Forms.Button();
+            System.Windows.Forms.Button Check;
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -38,17 +38,18 @@
             this.Version = new System.Windows.Forms.TextBox();
             this.Asset = new System.Windows.Forms.TextBox();
             this.ProductVersion = new System.Windows.Forms.CheckBox();
+            Check = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // check
+            // Check
             // 
-            this.Check.Location = new System.Drawing.Point(251, 81);
-            this.Check.Name = "check";
-            this.Check.Size = new System.Drawing.Size(75, 23);
-            this.Check.TabIndex = 0;
-            this.Check.Text = "Check";
-            this.Check.UseVisualStyleBackColor = true;
-            this.Check.Click += new System.EventHandler(this.check);
+            Check.Location = new System.Drawing.Point(251, 81);
+            Check.Name = "Check";
+            Check.Size = new System.Drawing.Size(75, 23);
+            Check.TabIndex = 0;
+            Check.Text = "Check";
+            Check.UseVisualStyleBackColor = true;
+            Check.Click += new System.EventHandler(this.Check);
             // 
             // label1
             // 
@@ -131,7 +132,7 @@
             // 
             // Sample
             // 
-            this.AcceptButton = this.Check;
+            this.AcceptButton = Check;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(333, 107);
@@ -144,7 +145,7 @@
             this.Controls.Add(this.User);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.Check);
+            this.Controls.Add(Check);
             this.Name = "Sample";
             this.Text = "Sample";
             this.ResumeLayout(false);
@@ -158,7 +159,6 @@
         private System.Windows.Forms.TextBox Repo;
         private System.Windows.Forms.TextBox Version;
         private System.Windows.Forms.TextBox Asset;
-        private System.Windows.Forms.Button Check;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;

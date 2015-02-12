@@ -1,7 +1,5 @@
-﻿using Octokit;
-using Semver;
+﻿using Semver;
 using System;
-using System.Threading.Tasks;
 
 namespace GitHubUpdate
 {
@@ -39,8 +37,7 @@ namespace GitHubUpdate
             if (version[0] == 'v')
                 version = version.Substring(1);
 
-            SemVersion result = null;
-            SemVersion.TryParse(version, out result);
+            SemVersion result = SemVersion.Parse(version);
 
             return result;
         }

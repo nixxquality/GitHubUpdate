@@ -1,27 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GitHubUpdate
 {
     public partial class UpdateNotifyDialog : Form
     {
-        readonly UpdateChecker checker;
-        bool loadednotes;
+        private readonly UpdateChecker _checker;
+        private bool _loadednotes;
 
         public UpdateNotifyDialog(UpdateChecker checker)
         {
-            this.checker = checker;
+            _checker = checker;
 
             InitializeComponent();
 
-            label1.Text = string.Format(label1.Text, checker.repostoryName);
+            label1.Text = string.Format(label1.Text, checker.RepostoryName);
         }
 
         void panel1_Resize(object sender, EventArgs e)
@@ -34,11 +27,10 @@ namespace GitHubUpdate
         {
             ReleaseNotesPanel.Visible = boxReleaseNotes.Checked;
 
-            if (!loadednotes)
-            {
-                ReleaseNotes.DocumentText = await checker.RenderReleaseNotes();
-                loadednotes = true;
-            }
+            if (_loadednotes) return;
+
+            ReleaseNotes.DocumentText = await _checker.RenderReleaseNotes();
+            _loadednotes = true;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Windows.Forms;
 
 using Octokit;
 using Semver;
@@ -18,86 +17,82 @@ namespace GitHubUpdate
 
     public class UpdateChecker
     {
-        IReleasesClient releaseClient;
-        internal GitHubClient github;
+        private IReleasesClient _releaseClient;
+        internal GitHubClient Github;
 
-        internal SemVersion currentVersion;
-        internal string repositoryOwner;
-        internal string repostoryName;
-        internal Release latestRelease;
+        internal SemVersion CurrentVersion;
+        internal string RepositoryOwner;
+        internal string RepostoryName;
+        internal Release LatestRelease;
 
-        void init(string owner, string name, SemVersion version)
+        void Init(string owner, string name, SemVersion version)
         {
-            github = new GitHubClient(new ProductHeaderValue(name + "-UpdateCheck"));
-            releaseClient = github.Release;
+            Github = new GitHubClient(new ProductHeaderValue(name + @"-UpdateCheck"));
+            _releaseClient = Github.Release;
 
-            repositoryOwner = owner;
-            repostoryName = name;
-            currentVersion = version;
+            RepositoryOwner = owner;
+            RepostoryName = name;
+            CurrentVersion = version;
         }
 
         public UpdateChecker(string owner, string name)
         {
-            Helper.ArgumentNotNullOrEmptyString(owner, "owner");
-            Helper.ArgumentNotNullOrEmptyString(name, "name");
+            Helper.ArgumentNotNullOrEmptyString(owner, @"owner");
+            Helper.ArgumentNotNullOrEmptyString(name, @"name");
 
             string version = System.Windows.Forms.Application.ProductVersion;
 
             version = version.Substring(0, version.LastIndexOf('.'));
 
-            init(owner, name, version);
+            Init(owner, name, version);
         }
 
         public UpdateChecker(string owner, string name, string version)
         {
-            Helper.ArgumentNotNullOrEmptyString(owner, "owner");
-            Helper.ArgumentNotNullOrEmptyString(name, "name");
-            Helper.ArgumentNotNullOrEmptyString(version, "version");
+            Helper.ArgumentNotNullOrEmptyString(owner, @"owner");
+            Helper.ArgumentNotNullOrEmptyString(name, @"name");
+            Helper.ArgumentNotNullOrEmptyString(version, @"version");
 
-            init(owner, name, Helper.StripInitialV(version));
+            Init(owner, name, Helper.StripInitialV(version));
         }
 
         public async Task<UpdateType> CheckUpdate()
         {
-            var releases = await releaseClient.GetAll(repositoryOwner, repostoryName);
-            latestRelease = releases.FirstOrDefault(release => !release.Prerelease && Helper.StripInitialV(release.TagName) > currentVersion);
+            var releases = await _releaseClient.GetAll(RepositoryOwner, RepostoryName);
+            LatestRelease = releases.FirstOrDefault(release => !release.Prerelease && Helper.StripInitialV(release.TagName) > CurrentVersion);
 
-            UpdateType type = UpdateType.None;
-            string tagName = null, body = null;
-            if (latestRelease != null)
-            {
-                tagName = latestRelease.TagName;
-                body = latestRelease.Body;
+            if (LatestRelease == null) return UpdateType.None;
 
-                var latestVersion = Helper.StripInitialV(tagName);
-                if (latestVersion.Major != currentVersion.Major)
-                    type = UpdateType.Major;
-                else if (latestVersion.Minor != currentVersion.Minor)
-                    type = UpdateType.Minor;
-                else if (latestVersion.Patch != currentVersion.Patch)
-                    type = UpdateType.Patch;
-            }
+            var tagName = LatestRelease.TagName;
+            var latestVersion = Helper.StripInitialV(tagName);
 
-            return type;
+            if (latestVersion.Major != CurrentVersion.Major)
+                return UpdateType.Major;
+            if (latestVersion.Minor != CurrentVersion.Minor)
+                return UpdateType.Minor;
+            if (latestVersion.Patch != CurrentVersion.Patch)
+                return UpdateType.Patch;
+
+            return UpdateType.None;
         }
 
         public async Task<string> RenderReleaseNotes()
         {
-            if (latestRelease == null)
+            if (LatestRelease == null)
                 throw new InvalidOperationException();
 
-            return await github.Miscellaneous.RenderRawMarkdown(latestRelease.Body);
+            return await Github.Miscellaneous.RenderRawMarkdown(LatestRelease.Body);
         }
 
-        public async void DownloadAsset(string assetname)
+        public /*async*/ void DownloadAsset(string assetname)
         {
-            var assets = await releaseClient.GetAssets(repositoryOwner, repostoryName, latestRelease.Id);
-            var asset = assets.First(n => n.Name == assetname);
-
             // asset.Url is some api wizardry that we'll maybe use later
+            //var assets = await _releaseClient.GetAssets(RepositoryOwner, RepostoryName, LatestRelease.Id);
+            //var asset = assets.First(n => n.Name == assetname);
+            
             // for now, do some ugly shit
             const string template = "https://github.com/{0}/{1}/releases/download/{2}/{3}";
-            string url = string.Format(template, repositoryOwner, repostoryName, latestRelease.TagName, assetname);
+            var url = string.Format(template, RepositoryOwner, RepostoryName, LatestRelease.TagName, assetname);
 
             System.Diagnostics.Process.Start(url);
         }
