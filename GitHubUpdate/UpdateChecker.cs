@@ -56,10 +56,36 @@ namespace GitHubUpdate
             Init(owner, name, Helper.StripInitialV(version));
         }
 
-        public async Task<UpdateType> CheckUpdate()
+        public async Task<UpdateType> CheckUpdate(UpdateType locked = UpdateType.None)
         {
             var releases = await _releaseClient.GetAll(RepositoryOwner, RepostoryName);
-            LatestRelease = releases.FirstOrDefault(release => !release.Prerelease && Helper.StripInitialV(release.TagName) > CurrentVersion);
+
+            SemVersion lockedVersion;
+            switch (locked)
+            {
+                case UpdateType.Major:
+                    lockedVersion = new SemVersion(CurrentVersion.Major + 1);
+                    LatestRelease = releases.FirstOrDefault(
+                        release => !release.Prerelease &&
+                        Helper.StripInitialV(release.TagName) > CurrentVersion &&
+                        Helper.StripInitialV(release.TagName) < lockedVersion
+                    );
+                    break;
+                case UpdateType.Minor:
+                    lockedVersion = new SemVersion(CurrentVersion.Major, CurrentVersion.Minor + 1);
+                    LatestRelease = releases.FirstOrDefault(
+                        release => !release.Prerelease &&
+                        Helper.StripInitialV(release.TagName) > CurrentVersion &&
+                        Helper.StripInitialV(release.TagName) < lockedVersion
+                    );
+                    break;
+                default:
+                    LatestRelease = releases.FirstOrDefault(
+                        release => !release.Prerelease &&
+                        Helper.StripInitialV(release.TagName) > CurrentVersion
+                    );
+                    break;
+            }
 
             if (LatestRelease == null) return UpdateType.None;
 

@@ -10,6 +10,7 @@ namespace Sample
         public Sample()
         {
             InitializeComponent();
+            Lock.SelectedIndex = 0;
         }
 
         void Check(object sender, EventArgs e)
@@ -25,7 +26,7 @@ namespace Sample
             }
 
             ((Button)sender).Enabled = false;
-            checker.CheckUpdate().ContinueWith(continuation =>
+            checker.CheckUpdate(locked: (UpdateType)Lock.SelectedIndex).ContinueWith(continuation =>
             {
                 // if (continuation.Result == UpdateType.None)
                 //    return;

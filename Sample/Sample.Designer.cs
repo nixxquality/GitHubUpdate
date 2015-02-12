@@ -38,6 +38,8 @@
             this.Version = new System.Windows.Forms.TextBox();
             this.Asset = new System.Windows.Forms.TextBox();
             this.ProductVersion = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.Lock = new System.Windows.Forms.ComboBox();
             Check = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -130,12 +132,36 @@
             this.ProductVersion.UseVisualStyleBackColor = true;
             this.ProductVersion.CheckedChanged += new System.EventHandler(this.ProductVersion_CheckedChanged);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 88);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(31, 13);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Lock";
+            // 
+            // Lock
+            // 
+            this.Lock.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Lock.FormattingEnabled = true;
+            this.Lock.Items.AddRange(new object[] {
+            "None",
+            "Major",
+            "Minor"});
+            this.Lock.Location = new System.Drawing.Point(53, 85);
+            this.Lock.Name = "Lock";
+            this.Lock.Size = new System.Drawing.Size(100, 21);
+            this.Lock.TabIndex = 13;
+            // 
             // Sample
             // 
             this.AcceptButton = Check;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(333, 107);
+            this.ClientSize = new System.Drawing.Size(333, 114);
+            this.Controls.Add(this.Lock);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.ProductVersion);
             this.Controls.Add(this.Asset);
             this.Controls.Add(this.label3);
@@ -164,6 +190,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private new System.Windows.Forms.CheckBox ProductVersion;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox Lock;
     }
 }
 
