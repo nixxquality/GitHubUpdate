@@ -1,5 +1,11 @@
-GitHub Update [![Build status](https://ci.appveyor.com/api/projects/status/4we4y6eh1wd7jyrp)](https://ci.appveyor.com/project/nixxquality/githubupdate)
+GitHub Update [![Project Status: Unsupported - The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](http://www.repostatus.org/badges/latest/unsupported.svg)](http://www.repostatus.org/#unsupported)
 =============
+
+**This project has been abandoned** by the owner as I do not use GitHub anymore. Feel free to fork and improve it, if you'd like.
+
+If you want to take over the NuGet package, go ahead and contact me at nixx@is-fantabulo.us.
+
+--------------
 
 Easy way to check if your C# program is up to date using GitHub Releases
 
